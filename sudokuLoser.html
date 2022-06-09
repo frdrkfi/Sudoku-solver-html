@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="no">
+<head> 
+  <title> Sudokuløser </title>
+  <link rel="stylesheet" href="../Maler/brukerinput.css">
+  <link rel="stylesheet" href="../Maler/tabellstil.css">
+  <meta charset="utf-8">
+  <style>
+	  
+  </style>
+</head>
+<body>
+
+<script src="../Maler/tabellfunksjon.js"></script>
+<script>
+
+    let grid = [
+        [1,7,0,0,0,0,0,4,0],
+        [3,0,0,0,2,0,6,0,0],
+        [0,0,0,0,3,7,1,0,0],
+        [6,0,0,5,0,0,0,3,0],
+        [0,0,4,1,0,8,5,0,0],
+        [0,1,0,0,0,6,0,0,2],
+        [0,0,3,7,8,0,0,0,0],
+        [0,0,7,0,1,0,0,0,6],
+        [0,4,0,0,0,0,0,7,8]
+    ];
+
+    function mulig(rad, kolonne, nummer){
+        // Vises nummeret i raden?
+        for(let i=0; i<9; i++){
+            if(grid[rad][i] == nummer){
+                return false;
+            }
+        }
+
+        // Vises nummeret i kolonnen?
+        for(let i=0; i<9; i++){
+            if(grid[i][kolonne] == nummer){
+                return false;
+            }
+        }
+
+        // Vises nummeret i firkanten?
+        let x0 = Math.floor(kolonne / 3) * 3;
+        let y0 = Math.floor(rad / 3) * 3;
+        for(let i=0; i<3; i++){
+            for(let j=0; j<3; j++){
+                if(grid[y0+i][x0+j] == nummer){
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+
+    function los(){
+        for(let rad=0; rad<9; rad++){
+            for(let kolonne=0; kolonne<9; kolonne++){
+                if(grid[rad][kolonne] == 0){
+                    for(let nummer=1; nummer<10; nummer++){
+                        if(mulig(rad, kolonne, nummer)){
+                            grid[rad][kolonne] = nummer;
+                            los();
+                            grid[rad][kolonne] = 0;
+                        }
+                    }
+                    return;
+                }
+            }
+        }
+        document.write(grid + "<br><br>");
+    }
+
+    los();
+
+</script>
+</body>
+</html>
